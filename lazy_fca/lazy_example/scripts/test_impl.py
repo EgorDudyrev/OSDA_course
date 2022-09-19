@@ -1,39 +1,34 @@
 import sys
 import random
 import copy
+from functools import reduce
 
 attrib_names = [
-    'top-left-square',
-    'top-middle-square',
-    'top-right-square',
-    'middle-left-square',
-    'middle-middle-square',
-    'middle-right-square',
-    'bottom-left-square',
-    'bottom-middle-square',
-    'bottom-right-square',
+    'top-left-square', 'top-middle-square', 'top-right-square',
+    'middle-left-square', 'middle-middle-square', 'middle-right-square',
+    'bottom-left-square', 'bottom-middle-square', 'bottom-right-square',
     'class'
 ]
 
+
 def make_intent(example):
     global attrib_names
-    return set([i+':'+str(k) for i, k in zip(attrib_names, example)])
+    return set([f"{i}:{k}" for i, k in zip(attrib_names, example)])
+
 
 cv_res = {
-    "positive_positive": 0,
-    "positive_negative": 0,
-    "negative_positive": 0,
-    "negative_negative": 0,
-    "contradictory": 0,
-    "total": 0,
+    "positive_positive": 0, "positive_negative": 0,
+    "negative_positive": 0, "negative_negative": 0,
+    "contradictory": 0, "total": 0,
 }
 
-def check_intersect(context_plus, context_minus, example, num_sub=1):
+
+def check_intersect(context_plus, context_minus, example, num_sub=1, threshold=1.1):
     global cv_res
     pos = 0
     neg = 0
     intent = make_intent(example)
-    for i in xrange(num_sub):
+    for i in range(num_sub):
         t = set(random.sample(example, random.randrange(len(intent))))
         for j in context_plus:
             if t.issubset(j):
@@ -45,8 +40,6 @@ def check_intersect(context_plus, context_minus, example, num_sub=1):
     def score(pos, neg):
         return pos * 1. / (neg + 1)
 
-    #threshold = 1.1
-    
     if score(pos, neg) > threshold:
         if example[-1] == 'positive':
             cv_res['positive_positive'] += 1
@@ -59,6 +52,7 @@ def check_intersect(context_plus, context_minus, example, num_sub=1):
             cv_res['negative_negative'] += 1
     else:
         cv_res['contradictory'] += 1
+
 
 def check_hypothesis(context_plus, context_minus, example):
     global cv_res
@@ -94,27 +88,25 @@ def check_hypothesis(context_plus, context_minus, example):
         cv_res["negative_negative"] += 1
 
 # Get data from train and test files
-#max_index = sys.argv[1]
-for index in xrange(1, int(max_index)):
+max_index = sys.argv[1]
+for index in range(1, int(max_index)):
     index = str(index)
-    q = open("train" + index + ".csv", "r")
-    train = [a.strip().split(",") for a in q]
-    plus  = [a for a in train if a[-1] == "positive"]
-    minus = [a for a in train if a[-1] == "negative"]
-    q.close()
-    
-    w = open("test" + index + ".csv", "r")
-    unknown = [a.strip().split(",") for a in w]
-    w.close()
+    with open("train" + index + ".csv", "r") as q:
+        train = [a.strip().split(",") for a in q]
+        plus = [a for a in train if a[-1] == "positive"]
+        minus = [a for a in train if a[-1] == "negative"]
+
+    with open("test" + index + ".csv", "r") as w:
+        unknown = [a.strip().split(",") for a in w]
 
     for elem in unknown:
         cv_res['total'] += 1
-        check_intersect(plus, minus, elem, len(elem) / 2)
+        check_intersect(plus, minus, elem, len(elem) // 2)
 
 cv_res_p = copy.copy(cv_res)
 total = cv_res_p["total"]
 for k, v in cv_res_p.iteritems():
     cv_res_p[k] = v * 1. / total    # part of 1.0
     
-print "Number of datasets done = %s" % index
+print("Number of datasets done = %s" % index)
 #print cv_res

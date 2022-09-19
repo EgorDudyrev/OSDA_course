@@ -3,16 +3,12 @@ import random
 
 
 # attrib_names = [ 'class','a1','a2','a3','a4','a5','a6' ]
+from functools import reduce
+
 attrib_names = [
-    'top-left-square',
-    'top-middle-square',
-    'top-right-square',
-    'middle-left-square',
-    'middle-middle-square',
-    'middle-right-square',
-    'bottom-left-square',
-    'bottom-middle-square',
-    'bottom-right-square',
+    'top-left-square', 'top-middle-square', 'top-right-square',
+    'middle-left-square', 'middle-middle-square', 'middle-right-square',
+    'bottom-left-square', 'bottom-middle-square', 'bottom-right-square',
     'class'
 ]
 
@@ -23,12 +19,9 @@ def make_intent(example):
 
 
 cv_res = {
-    "positive_positive": 0,
-    "positive_negative": 0,
-    "negative_positive": 0,
-    "negative_negative": 0,
-    "contradictory": 0,
-    "total": 0,
+    "positive_positive": 0, "positive_negative": 0,
+    "negative_positive": 0, "negative_negative": 0,
+    "contradictory": 0, "total": 0,
 }
 
 
@@ -37,7 +30,7 @@ def check_intersect(context_plus, context_minus, example, num_sub=1):
     pos = 0
     neg = 0
     intent = make_intent(example)
-    for i in xrange(num_sub):
+    for i in range(num_sub):
         t = set(random.sample(example, random.randrange(len(intent))))
         for j in context_plus:
             if t.issubset(j):
@@ -74,24 +67,14 @@ def check_hypothesis(context_plus, context_minus, example):
         candidate_intent = ei & eintent
         if not candidate_intent:
             continue
-        # print 'candidate_intent'
-        # print candidate_intent
         closure = [make_intent(i) for i in big_context
                    if make_intent(i).issuperset(candidate_intent)]
-#        print 'closure:'
-#        print closure
         res = reduce(lambda x, y: x & y if x & y else x | y, closure)
-        # print 'reduced:'
-        # print res
         for cs in ['positive', 'negative']:
             if 'class:' + cs in res:
                 labels[cs] = True
                 labels[cs + '_res'] = candidate_intent
 
-                # print 'classified as %s, reason:' % cs
-                # print candidate_intent
-                # print res
-#    print labels
     if labels.get("positive", False) and labels.get("negative", False):
         cv_res["contradictory"] += 1
         return
@@ -113,21 +96,19 @@ def check_hypothesis(context_plus, context_minus, example):
             print cintent
             print eintent
     '''
+
 # sanity check:
 # check_hypothesis(plus_examples, minus_examples, plus_examples[3])
 max_index = sys.argv[1]
-for index in xrange(1, int(max_index)):
+for index in range(1, int(max_index)):
     index = str(index)
-    q = open("train" + index + ".csv", "r")
-    train = [a.strip().split(",") for a in q]
-    plus = [a for a in train if a[-1] == "positive"]
-    minus = [a for a in train if a[-1] == "negative"]
+    with open("train" + index + ".csv", "r") as q:
+        train = [a.strip().split(",") for a in q]
+        plus = [a for a in train if a[-1] == "positive"]
+        minus = [a for a in train if a[-1] == "negative"]
 
-    # print t
-    q.close()
-    w = open("test" + index + ".csv", "r")
-    unknown = [a.strip().split(",") for a in w]
-    w.close()
+    with open("test" + index + ".csv", "r") as w:
+        unknown = [a.strip().split(",") for a in w]
 
     for elem in unknown:
         cv_res['total'] += 1
@@ -135,11 +116,11 @@ for index in xrange(1, int(max_index)):
         # print "done"
         # check_hypothesis(plus, minus, elem)
         # check_intersect(plus, minus, elem, len(elem) / 2)
-        check_intersect(plus, minus, elem, len(elem) / 2)
-    print "done: %s" % index
+        check_intersect(plus, minus, elem, len(elem) // 2)
+    print("done: %s" % index)
 
-print cv_res
+print(cv_res)
 for k, v in cv_res.iteritems():
     cv_res[k] = v * 1. / cv_res["total"]
 
-print cv_res
+print(cv_res)
