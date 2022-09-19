@@ -29,5 +29,3 @@ Seminars of the course are taught by:
 
 _Students Book_: Kuznetsov, S. O. (2019). Ordered Sets for Data Analysis. arXiv preprint arXiv:1908.11341 
 [(the link)](https://arxiv.org/abs/1908.11341)
-
-
