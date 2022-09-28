@@ -4,11 +4,11 @@ from typing import Iterator, List, Collection, Callable
 import pandas as pd
 from tqdm import tqdm
 
-# Generalized prediction function type hint.
+# A very general type hint for a prediction function.
 # A prediction function takes a triplet of (test object description, train descriptions, train labels)
 # and outputs a bool prediction
 PREDICTION_FUNCTION_HINT = Callable[
-    [Collection[bool], Collection[Collection[bool]], Collection[bool]], bool
+    [Collection, Collection[Collection], Collection[bool]], bool
 ]
 
 
@@ -42,16 +42,16 @@ def binarize_X(X: pd.DataFrame) -> 'pd.DataFrame[bool]':
 
 
 def predict_with_generators(
-        x: List[bool], X_train: List[List[bool]], Y_train: List[bool],
+        x: set, X_train: List[set], Y_train: List[bool],
         min_cardinality: int = 1
 ) -> bool:
     """Lazy prediction for ``x`` based on training data ``X_train`` and ``Y_train``
 
     Parameters
     ----------
-    x : List[bool]
+    x : set
         Description to make prediction for
-    X_train: List[List[bool]]
+    X_train: List[set]
         List of training examples
     Y_train: List[bool]
         List of labels of training examples
@@ -68,22 +68,22 @@ def predict_with_generators(
 
     n_counters_pos = 0  # number of counter examples for positive intersections
     for x_pos in X_pos:
-        intersection_pos = [(a and b) for a, b in zip(x, x_pos)]
-        if sum(intersection_pos) < min_cardinality:  # the intersection is too small
+        intersection_pos = x & x_pos
+        if len(intersection_pos) < min_cardinality:  # the intersection is too small
             continue
 
         for x_neg in X_neg:  # count all negative examples that contain intersection_pos
-            if all([a <= b for a, b in zip(intersection_pos, x_neg)]):
+            if (intersection_pos & x_neg) == intersection_pos:
                 n_counters_pos += 1
 
     n_counters_neg = 0  # number of counter examples for negative intersections
     for x_neg in X_neg:
-        intersection_neg = [(a and b) for a, b in zip(x, x_neg)]
-        if sum(intersection_neg) < min_cardinality:
+        intersection_neg = x & x_neg
+        if len(intersection_neg) < min_cardinality:
             continue
 
         for x_pos in X_pos:  # count all positive examples that contain intersection_neg
-            if all([a <= b for a, b in zip(intersection_neg, x_pos)]):
+            if (intersection_neg & x_pos) == intersection_neg:
                 n_counters_neg += 1
 
     perc_counters_pos = n_counters_pos / len(X_pos)
@@ -94,7 +94,7 @@ def predict_with_generators(
 
 
 def predict_array(
-        X: List[List[bool]], Y: List[bool],
+        X: List[set], Y: List[bool],
         n_train: int, update_train: bool = True, use_tqdm: bool = False,
         predict_func: PREDICTION_FUNCTION_HINT = predict_with_generators
 ) -> Iterator[bool]:
@@ -102,8 +102,8 @@ def predict_array(
 
     Parameters
     ----------
-    X: List[List[bool]]
-        Set of train and test examples to classify
+    X: List[set]
+        Set of train and test examples to classify represented with subsets of attributes
     Y: List[bool]
         Set of train and test labels for each example from X
     n_train: int
