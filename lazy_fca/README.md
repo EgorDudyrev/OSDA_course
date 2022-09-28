@@ -62,7 +62,7 @@ A pdf report should describe the reasoning behind every step of your homework. F
 it should contain a description of your dataset, what quality measure you have chosen (and why), 
 how did you optimize the prediction function, etc.  
 
-## Into to baseline algorithm
+## Intro to baseline algorithm
 
 ### Binary classification setup
 
