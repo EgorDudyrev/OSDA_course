@@ -67,9 +67,9 @@ how did you optimize the prediction function, etc.
 ### Binary classification setup
 
 This homework focuses on the task of binary classification. 
-That is, we are given the data $X = {x_1, x_2, x_3, ...}$
+That is, we are given the data $X = \\{x_1, x_2, x_3, ...\\}$
 and the corresponding labels $Y$ where each label $y \in Y$ is either True of False.
-The task is to make a "prediction" $\hat{y}$ of a label $y \in Y$ for each datum $x \in X$ as if $y$ was unknown.
+The task is to make a "prediction" $\hat{y}$ of a label $y \in Y$ for each datum $x \in X$ as if $y$ is unknown.
 
 To estimate the quality of predictions we split the data $X$ into two non-overlapping sets $X_{train}$ and $X_{test}$.
 Then we make make a prediction $\hat{y}$ for each test datum $x \in X_{test}$
@@ -86,12 +86,12 @@ That is, we replace each $x \in X$ with its binary analogue $x_{bin} \subseteq M
 The following algorithm is used in the homework as a baseline algorithm for lazy FCA-based classification.
 And it is called "Generators framework".
 
-Assume that we want to make a prediction for a description $x \subseteq M$ given
+Assume that we want to make a prediction for description $x \subseteq M$ given
 the set of training examples $X_{train} \subseteq 2^M$ and the labels $y \in {False, True}$
 corresponding to each $x \in X_{train}$.
 
 First, we split all examples $X_{train}$ to positive $X_{pos}$ and negative $X_{neg}$ examples:
-$$X_{pos} = {x \in X_{train} \mid y_x is True}, X_{neg} = X \setminus X_{pos}$$.
+$$X_{pos} = \\{x \in X_{train} \mid y_x \textrm{ is True} \\}, \quad X_{neg} = X \setminus X_{pos}$$.
 
 To classify the descriptions $x$ we follow the procedure:
 1) Count the number of counterexamples for positive examples \
