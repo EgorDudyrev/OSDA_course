@@ -1,50 +1,99 @@
-# English version
-_Russian version below_
-We are solving the task of binary classification. It means that there are only 2 possible values for target class. Usually they are denoted by signs + and -. You are given train set, for which you know its class value.
-On the other hand, you are given test dataset: there are examples with features, but without class label.
-The simple vesion implies that all your features (descriptions of objects) are also binary
+# Lazy FCA
 
-You are about to use so-called lazy method. It means that the step of building classificator is eliminated. As soon as you get test object you try to assign class label to it, using existing data from training set.
+A big homework to merge [Lazy Learning](https://en.wikipedia.org/wiki/Lazy_learning)
+and [Formal Concept Analysis](https://en.wikipedia.org/wiki/Formal_concept_analysis).
+Created for the course Ordered Sets in Data Analysis (GitHub [repo](https://github.com/EgorDudyrev/OSDA_course))
+taught in Data Science Master programme in HSE University, Moscow. 
 
-To solve the problem you are given the framework base on "generators"
+# Task description
 
-# "Generators" method
-You split your train data into two parts: C+ - context with "+" examples, C- - context with "-" examples.
-To classify object g you have to follow the procedure:
-1) for each object from C+ <img src="https://latex.codecogs.com/gif.latex?g_i%5E&plus;"/> you have to calculate intersection with the description of the object to classify (g'); and check, whether this description is presented in any example from C-
-2) do the same thing vice versa for C- - for each object description from C- calculate intersection and check whether this intersection is common with any object description from C+
+## Intention of the homework
+ 
+This homework serves as an entry point for students into the data science world.     
+So it introduces students to three main topics: 
+1. **Typical machine learning project**: \
+   The pipeline of loading a dataset, feature engineering, designing a new predictive algorithm, results comparison;     
+2. **Lazy learning**: \
+   Predicting labels for small or rapidly changing data;
+4. **Rule-learning** (on part with FCA): \
+   Viewing data as binary descriptions of objects (instead of points in a space of real numbers). 
 
-You will have to explore possible step functions for classification.
+## To-do list
 
-For instance: you classify object as +, if for intersection with examples from C+ you have no more than x counter-examples; and for descriptions with no counterexamples the size of intersection (cardinality) is at least min_cardinality 
+* Bare minimum (4 pts.)
+  * [ ] Find a dataset,
+  * [ ] Describe scaling (binarization) strategy for the dataset features,
+  * [ ] Describe prediction quality measure best suited for the dataset \
+   _(e.g. accuracy, f1 score, or any 
+  [measure](https://en.wikipedia.org/wiki/Evaluation_of_binary_classifiers) that you find reasonable)_,
+  * [ ] Adapt the pipeline from 
+  [lazyfca.ipynb](https://github.com/EgorDudyrev/OSDA_course/blob/Autumn_2022/lazy_fca/lazyfca.ipynb)
+  to your task. 
+* Good solution (5-8 pts.):
+  * [ ] Improve the baseline algorithm:
+    * [ ] Achieve better asymptotic time complexity,
+    * [ ] Rewrite the code using efficient python packages
+    (e.g. [numpy](https://pypi.org/project/numpy/), [bitarray](https://pypi.org/project/bitarray/), etc.),
+    * [ ] Modify the algorithm to achieve better quality of predictions.
+  * [ ] Or simply design a new lazy algorithm to beat the baseline \
+  _in terms of algorithmic time complexity, runtime, and prediction quality_,
+  * [ ] Compare the proposed algorithm with popular rule-based models \
+    _i.e. decision tree, random forest, XGBoost, CatBoost in terms of runtime and prediction quality_.
+* Perfect solution (9-10 pts.)
+  * [ ] Incorporate pattern structures into the pipeline to avoid the scaling (binarization),
+  * [ ] Test the proposed algorithm on more datasets (at least 3 others)
+
+## How to submit
+
+...
+
+## Gentle intro to Lazy learning and FCA
+
+### Binary classification setup
+
+This homework focuses on the task of binary classification. 
+That is, we are given the data $X = {x_1, x_2, x_3, ...}$
+and the corresponding labels $Y$ where each label $y \in Y$ is either True of False.
+The task is to make a "prediction" $\hat{y}$ of a label $y \in Y$ for each datum $x \in X$ as if $y$ was unknown.
+
+To estimate the quality of predictions we split the data $X$ into two non-overlapping sets $X_{train}$ and $X_{test}$.
+Then we make make a prediction $\hat{y}$ for each test datum $x \in X_{test}$
+based on the information obtained from the training data $X_{train}$. 
+Finally, we measure how well predictions $\hat{y}$ represent the true test labels $y$.  
+
+The original data $X$ often comes in various forms: numbers, categories, texts, graphs, etc.
+So to make all these kinds of data look the same we scale (binarize) the dataset. 
+Now we can say that there are a set of attributes $M$ where each attribute $m \in M$ is either describes $x$ or not.
+That is, we replace each $x \in X$ with its binary analogue $x_{bin} \subseteq M$.
 
 
-# lazyfca15
-Сроки:
-01/12 - рабочий код для всего цикла анализа алгоритмов
-08/12 - реализация и отчет по собственным доработкам для одного dataset'а
-15/12 - реализация поиска оптимальных параметров обучения на нескольких dataset'ах, поиск "глобального" оптимума
-22/12 - поддержка нешкалированных данных, финальный отчет
+### Baseline algorithm
+The following algorithm is used in the homework as a baseline algorithm for lazy FCA-based classification.
+And it is called "Generators framework".
+
+Assume that we want to make a prediction for a description $x \subseteq M$ given
+the set of training examples $X_{train} \subseteq 2^M$ and the labels $y \in {False, True}$
+corresponding to each $x \in X_{train}$.
+
+First, we split all examples $X_{train}$ to positive $X_{pos}$ and negative $X_{neg}$ examples:
+$$X_{pos} = {x \in X_{train} \mid y_x is True}, X_{neg} = X \setminus X_{pos}$$.
+
+To classify the descriptions $x$ we follow the procedure:
+1) Count the number of counterexamples for positive examples \
+For each positive example $x_{pos} \in X_{pos}$ we compute the intersection $x \cap x_{pos}$.
+Then, we count the counterexamples for this intersection,
+that is the number of negative examples $x_{neg} \in X_{neg}$ containing intersection $x \cap x_{pos}$;
+2) Dually, count the number of counterexamples for negative examples \
+For each negative example $x_{neg} \in X_{neg}$ we compute the intersection $x \cap x_{neg}$.
+Then, we count the counterexamples for obtained intersection,
+that is the number of positive examples $x_{pos} \in X_{pos}$ containing intersection $x \cap x_{neg}$.
+
+Finally, we compare the average number of counterexamples for positive and negative examples. 
+We classify $x$ as being positive if the number of counterexamples 
+for positive examples is smaller the one for negative examples. 
 
 
-Модификации:
-1) собственный набор данных (dataset)
-2) пересмотр пространства признаков в имеющихся dataset'ах
-3) реализация ленивой распределенной схемы
-4) поддержка онлайн схемы поступления данных (учет корректировки реального значения после прогноза)2) пересмотр пространства признаков в имеющихся dataset'ах
-
-Lazy Learning with FCA toolbox hometask
-
-Метрики качества
-* True Positive
-* True Negative
-* False Positive
-* False Negative
-* True Positive Rate
-* True Negative Rate
-* Negative Predictive Value
-* False Positive Rate
-* False Discovery Rate
-* Accuracy
-* Precision
-* Recall
+Note that, while programming, the set of attributes $M$ is represented with a tuple. 
+That is, instead of (unordered) set ${a,b,c}$ we have an indexed tuple $(m_1, m_2, m_3)$.
+Then, a description $x \subseteq M$ can be represented as a tuple of binary values: $(m_1 \in x, m_2 \in x, m_3 \in x)$.
+For example, given $M = {a,b,c}$, description $x = {a, c}$ would be represented as $(True, False, True)$.
