@@ -87,7 +87,7 @@ The following algorithm is used in the homework as a baseline algorithm for lazy
 And it is called "Generators framework".
 
 Assume that we want to make a prediction for description $x \subseteq M$ given
-the set of training examples $X_{train} \subseteq 2^M$ and the labels $y \in {False, True}$
+the set of training examples $X_{train} \subseteq 2^M$ and the labels $y_x \in \\{False, True\\}$
 corresponding to each $x \in X_{train}$.
 
 First, we split all examples $X_{train}$ to positive $X_{pos}$ and negative $X_{neg}$ examples:
