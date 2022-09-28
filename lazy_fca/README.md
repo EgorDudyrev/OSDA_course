@@ -21,7 +21,9 @@ So it introduces students to three main topics:
 ## To-do list
 
 * Bare minimum (4 pts.)
-  * [ ] Find a dataset,
+  * [ ] Find a dataset for binary classification:\
+  _Ideal dataset would be: openly available, with various datatypes (numbers, categories, graphs, etc),
+  with hundreds of rows_;
   * [ ] Describe scaling (binarization) strategy for the dataset features,
   * [ ] Describe prediction quality measure best suited for the dataset \
    _(e.g. accuracy, f1 score, or any 
@@ -31,23 +33,36 @@ So it introduces students to three main topics:
   to your task. 
 * Good solution (5-8 pts.):
   * [ ] Improve the baseline algorithm:
-    * [ ] Achieve better asymptotic time complexity,
-    * [ ] Rewrite the code using efficient python packages
-    (e.g. [numpy](https://pypi.org/project/numpy/), [bitarray](https://pypi.org/project/bitarray/), etc.),
+    * [ ] Achieve better asymptotic time complexity;
+    * [ ] Improve the runtime of examples comparison:\
+    _Rewrite the intersections of sets into the intersection of the corresponding bitmasks. 
+    Would it make the algorithm faster?\
+    ([numpy](https://pypi.org/project/numpy/), [bitarray](https://pypi.org/project/bitarray/),
+    and other python packages may be of help)_;
     * [ ] Modify the algorithm to achieve better quality of predictions.
   * [ ] Or simply design a new lazy algorithm to beat the baseline \
-  _in terms of algorithmic time complexity, runtime, and prediction quality_,
+  _in terms of algorithmic time complexity, runtime, and prediction quality_;
   * [ ] Compare the proposed algorithm with popular rule-based models \
     _i.e. decision tree, random forest, XGBoost, CatBoost in terms of runtime and prediction quality_.
 * Perfect solution (9-10 pts.)
-  * [ ] Incorporate pattern structures into the pipeline to avoid the scaling (binarization),
+  * [ ] Incorporate pattern structures into the pipeline to avoid the scaling (binarization);
   * [ ] Test the proposed algorithm on more datasets (at least 3 others)
 
 ## How to submit
 
-...
+Students are expected to provide the working code and pdf report for their homework by the end of the semester. 
 
-## Gentle intro to Lazy learning and FCA
+The code should be available on the students GitHub accounts.
+Please, modify [lazy_pipeline.py](https://github.com/EgorDudyrev/OSDA_course/blob/feature/lazy_refactoring/lazy_fca/lazy_pipeline.py)
+script to load and to scale your dataset and to keep your proposed predictive function.
+Modify [lazyfca.ipynb](https://github.com/EgorDudyrev/OSDA_course/blob/feature/lazy_refactoring/lazy_fca/lazyfca.ipynb) notebook
+to run your code and produce final [Classifier_comparison](https://github.com/EgorDudyrev/OSDA_course/blob/feature/lazy_refactoring/lazy_fca/Classifier_comparison.png).
+
+A pdf report should describe the reasoning behind every step of your homework. For example,
+it should contain a description of your dataset, what quality measure you have chosen (and why), 
+how did you optimize the prediction function, etc.  
+
+## Into to baseline algorithm
 
 ### Binary classification setup
 
@@ -91,9 +106,3 @@ that is the number of positive examples $x_{pos} \in X_{pos}$ containing interse
 Finally, we compare the average number of counterexamples for positive and negative examples. 
 We classify $x$ as being positive if the number of counterexamples 
 for positive examples is smaller the one for negative examples. 
-
-
-Note that, while programming, the set of attributes $M$ is represented with a tuple. 
-That is, instead of (unordered) set ${a,b,c}$ we have an indexed tuple $(m_1, m_2, m_3)$.
-Then, a description $x \subseteq M$ can be represented as a tuple of binary values: $(m_1 \in x, m_2 \in x, m_3 \in x)$.
-For example, given $M = {a,b,c}$, description $x = {a, c}$ would be represented as $(True, False, True)$.
