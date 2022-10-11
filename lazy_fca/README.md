@@ -53,10 +53,10 @@ So it introduces students to three main topics:
 Students are expected to provide the working code and pdf report for their homework by the end of the semester. 
 
 The code should be available on the students GitHub accounts.
-Please, modify [lazy_pipeline.py](https://github.com/EgorDudyrev/OSDA_course/blob/feature/lazy_refactoring/lazy_fca/lazy_pipeline.py)
+Please, modify [lazy_pipeline.py](https://github.com/EgorDudyrev/OSDA_course/blob/Autumn_2022/lazy_fca/lazy_pipeline.py)
 script to load and to scale your dataset and to keep your proposed predictive function.
-Modify [lazyfca.ipynb](https://github.com/EgorDudyrev/OSDA_course/blob/feature/lazy_refactoring/lazy_fca/lazyfca.ipynb) notebook
-to run your code and produce final [Classifier_comparison](https://github.com/EgorDudyrev/OSDA_course/blob/feature/lazy_refactoring/lazy_fca/Classifier_comparison.png).
+Modify [lazyfca.ipynb](https://github.com/EgorDudyrev/OSDA_course/blob/Autumn_2022/lazy_fca/lazyfca.ipynb) notebook
+to run your code and produce final [Classifier_comparison](https://github.com/EgorDudyrev/OSDA_course/blob/Autumn_2022/lazy_fca/Classifier_comparison.png).
 
 A pdf report should describe the reasoning behind every step of your homework. For example,
 it should contain a description of your dataset, what quality measure you have chosen (and why), 
