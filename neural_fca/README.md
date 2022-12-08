@@ -13,18 +13,18 @@ taught in Data Science Master programme in HSE University, Moscow.
 * Bare minimum (5-6 pts.)
   * [ ] Find a dataset for binary classification:\
   _Ideal dataset would be: openly available, with various datatypes (numbers, categories, graphs, etc), with hundreds of rows_;
-  * [ ] Describe scaling (binarization) strategy for the dataset features,
+  * [ ] Describe scaling (binarization) strategy for the dataset features;
   * [ ] Describe prediction quality measure best suited for the dataset\
-  _(e.g. accuracy, f1 score, or any measure that you find reasonable)_,
-  * [ ] Fit and test the network on your task
-  (consider NeuralFCA.ipynb to create and fit your network).
+  _(e.g. accuracy, f1 score, or any measure that you find reasonable)_;
+  * [ ] Fit and test the network on your task\
+  _(consider NeuralFCA.ipynb to create and fit your network)_.
 * Ways to improve the basic pipeline (additional 1-4 pts):
-  * [ ] Write better scaling algorithm to binarize the original data
-  * [ ] Test and document various techniques to select best concepts from the concept lattice
-  _(it would be great if your network will only contain no more than 30 concepts)_
-  * [ ] Test and document the efficiency of various nonlinearities to put in the network
-  * [ ] Compare the prediction quality of the proposed model with State-of-the-Art approaches
-  * [ ] Create a nice and readable visualization of the network
+  * [ ] Write better scaling algorithm to binarize the original data;
+  * [ ] Test and document various techniques to select best concepts from the concept lattice\
+  _(it would be great if your network will only contain no more than 30 concepts)_;
+  * [ ] Test and document the efficiency of various nonlinearities to put in the network;
+  * [ ] Compare the prediction quality of the proposed model with State-of-the-Art approaches;
+  * [ ] Create a nice and readable visualization of the network.
 
 
 ## How to submit
