@@ -20,33 +20,29 @@ So it introduces students to three main topics:
 
 ## To-do list
 
-* Bare minimum (4 pts.)
+* Basic achievements (5-6 pts.)
   * [ ] Find a dataset for binary classification:\
   _Ideal dataset would be: openly available, with various datatypes (numbers, categories, graphs, etc),
   with hundreds of rows_;
-  * [ ] Describe scaling (binarization) strategy for the dataset features,
-  * [ ] Describe prediction quality measure best suited for the dataset \
-   _(e.g. accuracy, f1 score, or any 
-  [measure](https://en.wikipedia.org/wiki/Evaluation_of_binary_classifiers) that you find reasonable)_,
-  * [ ] Adapt the pipeline from 
-  [lazyfca.ipynb](https://github.com/EgorDudyrev/OSDA_course/blob/Autumn_2022/lazy_fca/lazyfca.ipynb)
-  to your task. 
-* Good solution (5-8 pts.):
-  * [ ] Improve the baseline algorithm:
-    * [ ] Achieve better asymptotic time complexity;
-    * [ ] Improve the runtime of examples comparison:\
-    _Rewrite the intersections of sets into the intersection of the corresponding bitmasks. 
-    Would it make the algorithm faster?\
-    ([numpy](https://pypi.org/project/numpy/), [bitarray](https://pypi.org/project/bitarray/),
-    and other python packages may be of help)_;
-    * [ ] Modify the algorithm to achieve better quality of predictions.
-  * [ ] Or simply design a new lazy algorithm to beat the baseline \
+  * Describe scaling (binarization) strategy for the dataset features,
+  * Describe prediction quality measure best suited for the dataset\
+  _(e.g. accuracy, f1 score, or any measure that you find reasonable)_,
+  * Adapt the pipeline from lazyfca.ipynb to your task.
+* (Very) good solution (7-8 pts.):
+  * Improve the baseline algorithm:
+    * Achieve better asymptotic time complexity;
+    * Improve the runtime of examples comparison:
+    * Rewrite the intersections of sets into the intersection of the corresponding bitmasks. Would it make the algorithm faster?\
+    _(numpy, bitarray, and other python packages may be of help)_;
+    * Modify the algorithm to achieve better quality of predictions.
+  * Or simply design a new lazy algorithm to beat the baseline\
   _in terms of algorithmic time complexity, runtime, and prediction quality_;
-  * [ ] Compare the proposed algorithm with popular rule-based models \
-    _i.e. decision tree, random forest, XGBoost, CatBoost in terms of runtime and prediction quality_.
+  * Compare the proposed algorithm with at least 2  popular rule-based models\
+  _i.e. decision tree, random forest, XGBoost, CatBoost in terms of runtime and prediction quality_.
 * Perfect solution (9-10 pts.)
-  * [ ] Incorporate pattern structures into the pipeline to avoid the scaling (binarization);
-  * [ ] Test the proposed algorithm on more datasets (at least 3 others)
+  * Incorporate pattern structures into the pipeline to avoid the scaling (binarization);
+  * Test the proposed algorithm on more datasets (at least 3 others);
+  * Compare the proposed algorithm with at least 3  popular rule-based models.
 
 ## How to submit
 
