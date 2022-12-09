@@ -16,8 +16,14 @@ class DisjunctiveNeuron:
     intent: FrozenSet[str]
     level: int
 
+    def __eq__(self, other: 'DisjunctiveNeuron'):
+        return self.intent == other.intent and self.level == other.level
+
+    def __lt__(self, other: 'DisjunctiveNeuron'):
+        return self.intent & other.intent == other.intent and self.level > other.level
+
     def __le__(self, other: 'DisjunctiveNeuron'):
-        return (self.intent & other.intent == other.intent) and self.level >= other.level
+        return self < other or self == other
 
     def __hash__(self):
         return hash((self.intent, self.level))
